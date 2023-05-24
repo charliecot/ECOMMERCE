@@ -1,0 +1,146 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block title %} 
+VIEW-BASKET
+{% endblock%}
+
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center fw-bolder text-uppercase">my shopping items</h1>
+    {% for item in basket %}
+    {% with products=item.products %}
+    <div class="row border border-2 product_item" data-index="{{products.id}}">
+      
+        <div class="col-4">
+            <img src="{{ products.image.url }} " alt="responsive-image" class="card-img-top w-60">
+
+        </div>
+        <div class="col-8">
+            <p class="lead ">{{products.title}}</p>
+            <p class="lead "><span>{{products.author}}</span>(Author)</p>
+
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between">
+                    <p class="lead ">{{products.description|slice:255}}</p>
+                    <p class="lead fw-bold">${{item.total_price}}</p>
+
+
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <div>
+                        <label for="select">QTY</label>
+                        <select id="select{{products.id}}">
+                            <option selected >{{item.qty}}</option>
+
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+                    <div>
+                    <button class="btn  btn-outline-danger delete-item" data-index ="{{products.id}}"><a href="#"
+                            class="text-decoration-none lead text-dark text-capitalize fw-bold"> delete
+                            basket</a></button>
+                            <button class="btn  btn-outline-secondary update-item" data-index="={{products.id}}"><a href="#"
+                                class="text-decoration-none lead text-dark text-capitalize fw-bold">update
+                                basket</a></button></div>
+
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+
+   {% endwith %}
+   {% endfor %}
+    
+
+    
+</div>
+<div class="container ">
+    <div class="row mb-3">
+        <div class="col-7"></div>
+        <div class="col-5 d-flex justify-content-between">
+            <h5 class="lead display-5  ">totalprice:</h5>
+            <span class="display-5">{{basket.get_total_price}}</span>
+        </div>
+    </div>
+    
+</div>
+<script>
+    // this is to delete an item in the basket
+    $(document).on('click', ".delete-item", function(e){
+      e.preventDefault();
+      var prod= $(this).data('index'); 
+
+      $.ajax({
+
+        type:'POST',
+        url :'{% url "shopping:delete_items" %}',
+        data:{
+                productid: $(this).data('index'),
+                
+                csrfmiddlewaretoken:"{{csrf_token}}",
+
+                action:"post"
+            },
+            success: function(json){
+                var product_id = $(this).data('index');
+            //  const produt_item =document.getElementsByClassName('product-item');
+                 $('.product_item[data-index="'+ prod +'"]').remove();
+            },
+            error: function(xhr,errs,error){
+                
+            }
+
+
+
+      })
+
+
+    })
+
+
+  
+// this is to update an item in the basket
+$(document).on('click', ".update-item", function(e){
+      e.preventDefault();
+      var prodid= $(this).data('index'); 
+
+      $.ajax({
+
+        type:'POST',
+        url :'{% url "shopping:update_items" %}',
+        data:{
+                productid: $(this).data('index'),
+                productqty: $('#select'+  prodid  + 'option:selected').text(),
+                csrfmiddlewaretoken:"{{csrf_token}}",
+
+                action:"post"
+            },
+            success: function(json){
+               
+            //  const produt_item =document.getElementsByClassName('product-item');
+                 
+            },
+            error: function(xhr,errs,error){
+                
+            }
+
+
+
+      })
+
+
+    })
+
+
+
+
+</script>
+
+{% endblock %}

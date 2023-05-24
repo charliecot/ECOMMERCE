@@ -1,0 +1,83 @@
+{% extends '../base.html'%}
+
+
+{% block title %}
+INDIVIDUAL-PRODUCT
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+
+
+        <div class="col-4">
+            <img src="{{ products.image.url }} " alt="responsive-image" class="card-img-top w-60">
+
+        </div>
+        <div class="col-8">
+            <p class="lead ">{{products.title}}</p>
+            <p class="lead "><span>{{products.author}}</span>(Author)</p>
+
+            <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between">
+                    <p class="lead ">{{products.description|slice:12}}</p>
+                    <p class="lead fw-bold">${{products.price}}</p>
+
+
+                </li>
+                <li class="list-group-item d-flex justify-content-between">
+                    <div>
+                        <label for="select">QTY</label>
+                        <select name="" id="select">
+
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+                    <button class="btn  btn-primary" id="add-item" value={{products.id}}><a href="#"
+                            class="text-decoration-none lead text-white text-capitalize fw-bold"> add
+                            basket</a></button>
+
+
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+</div>
+<script>
+
+    $(document).on('click', '#add-item', function(e){
+        e.preventDefault();
+        
+        $.ajax({
+            type:'POST',
+            url:'{% url "shopping:add_items" %}',
+            data:{
+                productid: $('#add-item').val(),
+                productQTY: $('#select').val(), 
+                csrfmiddlewaretoken:"{{csrf_token}}",
+
+                action:"post"
+            },
+            success: function(json){
+             const quantity=document.getElementById('span')
+             quantity.innerHTML=json.qty   
+
+            },
+            error: function(xhr,errs,error){
+                
+            }
+
+
+        }); 
+
+    } )
+</script>
+
+{% endblock %}

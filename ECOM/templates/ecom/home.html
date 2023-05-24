@@ -1,0 +1,62 @@
+{% extends './base.html' %}
+{% load static %}
+{% block title %} 
+HOME 
+{% endblock%}
+
+
+
+{% block content%}
+
+<div class="container mb-4">
+    <div class="row">
+        <div class="col-6 mx-auto">
+            <div class="jumbotron">
+                <p class="lead display-5 fw-bold"> read,buy,search,reviews</p>
+                <p class="lead">
+                    Lorem ipsum dolor sit amet consectetur 
+                    mollitia possimus magni ipsam 
+
+                </p>
+                <p class="lead">
+                    Lorem ipsum dolor sit amet consectetur 
+                    mollitia possimus magni ipsam 
+
+                </p> <p class="lead">
+                    Lorem ipsum dolor sit amet consectetur 
+                    mollitia possimus magni ipsam 
+
+                </p>
+                <button class="btn btn-primary lead text-capitalize ">create acount</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-4">
+    <div class="row">
+        {% for c in products %}
+
+        <div class="col-3 mt-5 mb-2">
+			<div class="card">
+				<div class="card-header">
+					<div class="card-title lead fw-bold text-center">All book</div>
+				</div>
+				<img src="{{ c.image.url }} " alt="responsive-image" class="card-img-top" >
+				<div class="card-body"
+				><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+				tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+				quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo</p>
+				<button class="btn w-100 btn-outline-primary"><a href="{{c.get_absolute_url}}" class="text-decoration-none lead text-black  font-weight-bold">{{c.title}}</a></button>
+				
+			</div>
+				
+
+			</div>
+			
+		</div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

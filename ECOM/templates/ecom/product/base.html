@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} Main-Page {% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'ECOM/css/bootstrap.min.css'%}">
+    <script src="{% static 'ECOM/jquery-3.7.0.min.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .dropdown-menu :hover {
+            background-color: gray;
+            color: whitesmoke;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid mb-5">
+        <div class="row">
+            <div class="col  ">
+                <nav class="navbar navbar-light navbar-expand-lg bg-light">
+                    <a href="#" class=" px-2 navbar-brand text-primary lead text-capitalize display-2">bookstore</a>
+                    <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="nav">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item"><a href="{% url 'ECOM:all_product' %}" class="nav-link">Home</a> </li>
+                            <li class="nav-item"><a href="" class="nav-link">Link</a></li>
+                            <li class="nav-item dropdown">
+                                <a href="" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Libirary</a>
+                                <div class="dropdown-menu fade">
+                                    <a href="" class="dropdown-item">ALL</a>
+                                    {% for c in categories %}
+                                    <a href="{{c.get_absolute_url}}" class="dropdown-item">{{c.name|title}}</a>
+                                    {% endfor %}
+                                </div>
+                            </li>
+
+
+
+                            <li class="nav-item"><a href="" class="nav-link">utilities</a></li>
+
+                        </ul>
+                        <form class=" d-flex justify-content-evenly " style="margin-left: 400px; width: 40%;">
+                            <input type="search" name="search" class="form-control form-control-lg" style="width:100%;"
+                                placeholder="Search">
+                            <button class="btn btn-primary btn-lg " style="margin-left:20px;">search</button>
+
+                        </form>
+                    </div>
+
+                </nav>
+
+
+            </div>
+        </div>
+    </div>
+
+    {% block content %}
+
+
+
+    {% endblock %}
+    <script src="{% static 'ECOM/js/bootstrap.bundle.js' %}"></script>
+</body>
+
+</html>
